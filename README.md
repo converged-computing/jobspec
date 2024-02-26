@@ -1,4 +1,4 @@
-# Flux JobSpec (Go)
+# Flux Jobspec (Go)
 
 This is a simple library that provides go structures for the Flux Framework [Jobspec](https://flux-framework.readthedocs.io/projects/flux-rfc/en/latest/spec_25.html) for use in other projects. 
 
