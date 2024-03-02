@@ -1,5 +1,9 @@
 package v1
 
+var (
+	jobspecVersion = 1
+)
+
 type Jobspec struct {
 	Version    int        `json:"version" yaml:"version"`
 	Resources  []Resource `json:"resources,omitempty" yaml:"resources,omitempty"`

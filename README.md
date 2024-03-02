@@ -16,6 +16,45 @@ Run all tests at once:
 make test
 ```
 
+Here is an example of usage. Note that this isn't a full program, but is intended to show helper functions.
+In this small program, we load in a jobspec (from yaml) and then validate and serialize to each of json and yaml.
+
+```go
+package main
+
+import (
+	"fmt"
+	"os"
+
+	v1 "github.com/compspec/jobspec-go/pkg/jobspec/v1"
+)
+
+func main() {
+
+  // Example 1: reading from file
+  yamlFile := "examples/v1/example1/jobspec.yaml"
+
+  // This is how to read from a YAML file
+  js, err := v1.LoadJobspecYaml(yamlFile)
+  // Validate the jobspec
+  valid, err := js.Validate()
+
+  // Convert back to YAML (print out as string(out))
+  out, err := js.JobspecToYaml()
+
+  // Convert back into JSON (also print string(out))
+  out, err = js.JobspecToJson()
+
+  // Example 2: creating from scratch
+  var nodes int32 = 2
+  var tasks int32 = 12
+  js, err := v1.NewSimpleJobspec("myjobspec", "echo hello world", nodes, tasks)
+  // proceed with equivalent functions above!
+}
+```
+
+For full examples, see the [examples](examples/v1) directory.
+
 ### Version 1
 
 You can run any example (and view the code) to see how it works!
