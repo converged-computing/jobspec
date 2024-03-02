@@ -5,10 +5,6 @@ import (
 	"fmt"
 	"os"
 
-	"sigs.k8s.io/yaml"
-
-	"github.com/compspec/jobspec-go/pkg/schema"
-
 	v1 "github.com/compspec/jobspec-go/pkg/jobspec/v1"
 )
 
@@ -24,30 +20,23 @@ func main() {
 		flag.Usage()
 		os.Exit(0)
 	}
-	file, err := os.ReadFile(yamlFile)
+	js, err := v1.LoadJobspecYaml(yamlFile)
 	if err != nil {
 		fmt.Printf("error reading %s:%s\n", yamlFile, err)
 		os.Exit(1)
 	}
 
 	// Validate the jobspec
-	valid, err := schema.Validate(file, schema.SchemaUrl, v1.Schema)
+	valid, err := js.Validate()
 	if !valid || err != nil {
 		fmt.Printf("schema is not valid:%s\n", err)
 		os.Exit(1)
 	} else {
 		fmt.Println("schema is valid")
 	}
-
-	js := v1.Jobspec{}
-	err = yaml.Unmarshal([]byte(file), &js)
-	if err != nil {
-		fmt.Printf("error unmarshalling %s:%s\n", yamlFile, err)
-		os.Exit(1)
-	}
 	fmt.Println(js)
 
-	out, err := yaml.Marshal(js)
+	out, err := js.JobspecToYaml()
 	if err != nil {
 		fmt.Printf("error marshalling %s:%s\n", yamlFile, err)
 		os.Exit(1)

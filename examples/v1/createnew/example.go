@@ -1,7 +1,6 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"os"
 
@@ -9,20 +8,13 @@ import (
 )
 
 func main() {
-	fmt.Println("This example reads, parses, and validates a Jobspec")
+	fmt.Println("This example creates a new Jobspec")
 
-	// Assumes running from the root
-	fileName := flag.String("json", "examples/v1/example1/jobspec.yaml", "yaml file")
-	flag.Parse()
-
-	yamlFile := *fileName
-	if yamlFile == "" {
-		flag.Usage()
-		os.Exit(0)
-	}
-	js, err := v1.LoadJobspecYaml(yamlFile)
+	var nodes int32 = 2
+	var tasks int32 = 12
+	js, err := v1.NewSimpleJobspec("myjobspec", "echo hello world", nodes, tasks)
 	if err != nil {
-		fmt.Printf("error reading %s:%s\n", yamlFile, err)
+		fmt.Printf("error creating jobspec: %s\n", err)
 		os.Exit(1)
 	}
 
@@ -38,7 +30,7 @@ func main() {
 
 	out, err := js.JobspecToYaml()
 	if err != nil {
-		fmt.Printf("error marshalling %s:%s\n", yamlFile, err)
+		fmt.Printf("error marshalling jobspec: %s\n", err)
 		os.Exit(1)
 	}
 	fmt.Println(string(out))
@@ -46,7 +38,7 @@ func main() {
 	// One example of json
 	out, err = js.JobspecToJson()
 	if err != nil {
-		fmt.Printf("error marshalling %s:%s\n", yamlFile, err)
+		fmt.Printf("error marshalling jobspec: %s\n", err)
 		os.Exit(1)
 	}
 	fmt.Println(string(out))
