@@ -35,21 +35,20 @@ func main() {
   yamlFile := "examples/v1/example1/jobspec.yaml"
 
   // This is how to read from a YAML file
-  js, _ := v1.LoadJobspecYaml(yamlFile)
-
-	// Validate the jobspec
-	valid, _ := js.Validate()
+  js, err := v1.LoadJobspecYaml(yamlFile)
+  // Validate the jobspec
+  valid, err := js.Validate()
 
   // Convert back to YAML (print out as string(out))
-	out, err := js.JobspecToYaml()
+  out, err := js.JobspecToYaml()
 
-	// Convert back into JSON (also print string(out))
-	out, err = js.JobspecToJson()
+  // Convert back into JSON (also print string(out))
+  out, err = js.JobspecToJson()
 
   // Example 2: creating from scratch
   var nodes int32 = 2
   var tasks int32 = 12
-  js, _ := v1.NewSimpleJobspec("myjobspec", "echo hello world", nodes, tasks)
+  js, err := v1.NewSimpleJobspec("myjobspec", "echo hello world", nodes, tasks)
   // proceed with equivalent functions above!
 }
 ```
