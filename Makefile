@@ -3,12 +3,13 @@ COMMONENVVAR=GOOS=$(shell uname -s | tr A-Z a-z)
 RELEASE_VERSION?=v$(shell date +%Y%m%d)-$(shell git describe --tags --match "v*")
 
 .PHONY: all
-all: example1 example2 example3 example4 example5 example6 createnew
+all: example1 example2 example3 example4 example5 example6 createnew experimental1
 
 .PHONY: build
 build: 
 	go mod tidy
 	mkdir -p ./examples/v1/bin
+	mkdir -p ./examples/experimental/bin
 
 # Build examples
 .PHONY: createnew
@@ -39,6 +40,10 @@ example5: build
 example6: build
 	$(COMMONENVVAR) $(BUILDENVVAR) go build -ldflags '-w' -o ./examples/v1/bin/example6 examples/v1/example6/example.go
 
+.PHONY: experimental1
+experimental1: build
+	$(COMMONENVVAR) $(BUILDENVVAR) go build -ldflags '-w' -o ./examples/experimental/bin/example1 examples/experimental/example1/example.go
+
 .PHONY: test
 test:
 	./examples/v1/bin/example1
@@ -48,6 +53,7 @@ test:
 	./examples/v1/bin/example5
 	./examples/v1/bin/example6
 	./examples/v1/bin/createnew
+	./examples/experimental/bin/example1
 
 .PHONY: clean
 clean:
