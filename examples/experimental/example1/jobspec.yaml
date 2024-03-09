@@ -1,0 +1,23 @@
+version: 1
+resources:
+  - type: node
+    count: 4
+    with:
+      - type: slot
+        count: 1
+        label: default
+        with:
+          - type: core
+            count: 2
+tasks:
+- command:
+  - ior
+  count:
+    per_slot: 1
+  resources:
+    io:
+      storage:
+      - priority: 1
+        storage: mtl2unit
+      - priority: 2
+        storage: shm
