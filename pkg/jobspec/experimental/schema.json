@@ -106,7 +106,7 @@
         "maxItems": 1,
         "items": {
           "type": "object",
-          "required": ["command", "slot", "count" ],
+          "required": ["slot", "count" ],
           "properties": {
             "command": {
               "type": ["string", "array"],
@@ -114,6 +114,8 @@
               "items": { "type": "string" }
             },
             "resources": { "type": "object" },
+            "batch": { "type": "string" },
+            "script": { "type": "string" },
             "slot": { "type": "string" },
             "count": {
               "type": "object",
