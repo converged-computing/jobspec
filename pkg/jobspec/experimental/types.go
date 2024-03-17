@@ -16,6 +16,8 @@ type Tasks struct {
 	Slot      string                 `json:"slot,omitempty" yaml:"slot,omitempty"`
 	Count     Count                  `json:"count,omitempty" yaml:"count,omitempty"`
 	Resources map[string]interface{} `json:"resources,omitempty" yaml:"resources,omitempty"`
+	Script    string                 `json:"script,omitempty" yaml:"script,omitempty"`
+	Batch     string                 `json:"batch,omitempty" yaml:"batch,omitempty"`
 }
 
 type Count struct {
