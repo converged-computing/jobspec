@@ -7,17 +7,22 @@ var (
 type Jobspec struct {
 	Version    int        `json:"version" yaml:"version"`
 	Resources  []Resource `json:"resources,omitempty" yaml:"resources,omitempty"`
-	Tasks      []Tasks    `json:"tasks,omitempty" yaml:"tasks,omitempty"`
+	Task       Task       `json:"task,omitempty" yaml:"task,omitempty"`
 	Attributes Attributes `json:"attributes,omitempty" yaml:"attributes,omitempty"`
 }
 
-type Tasks struct {
+type Task struct {
 	Command   []string               `json:"command,omitempty" yaml:"command,omitempty"`
 	Slot      string                 `json:"slot,omitempty" yaml:"slot,omitempty"`
 	Count     Count                  `json:"count,omitempty" yaml:"count,omitempty"`
 	Resources map[string]interface{} `json:"resources,omitempty" yaml:"resources,omitempty"`
-	Script    string                 `json:"script,omitempty" yaml:"script,omitempty"`
-	Batch     string                 `json:"batch,omitempty" yaml:"batch,omitempty"`
+	Scripts   []Script               `json:"scripts,omitempty" yaml:"scripts,omitempty"`
+	Transform []interface{}          `json:"transform,omitempty" yaml:"transform,omitempty"`
+}
+
+type Script struct {
+	Name    string `json:"name" yaml:"name"`
+	Content string `json:"content" yaml:"content"`
 }
 
 type Count struct {

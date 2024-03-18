@@ -49,7 +49,7 @@ exp2: build
 	$(COMMONENVVAR) $(BUILDENVVAR) go build -ldflags '-w' -o ./examples/experimental/bin/example2 examples/experimental/example2/example.go
 
 .PHONY: test
-test:
+test: all
 	./examples/v1/bin/example1
 	./examples/v1/bin/example2
 	./examples/v1/bin/example3
