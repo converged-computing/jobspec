@@ -9,22 +9,25 @@ resources:
         with:
           - type: core
             count: 2
-tasks:
-- count:
+task:
+  slot: "default"
+  count:
     per_slot: 1
-  script: |
-    #!/bin/bash
-    start_fractal() {
-      sleep 5
-      curl -X POST http://localhost:9092/start       
-     }
-     echo "This is task \${FLUX_TASK_RANK}"
-     if [[ "\${FLUX_TASK_RANK}" == "0" ]]; then
-       start_fractal &
-       fractal leader --host 0.0.0.0:50051 --force-exit
-     else
-       fractal worker --host flux-sample-0.flux-service.default.svc.cluster.local:50051
-     fi    
+  scripts: 
+    - name: "job.sh"
+      content: |
+        #!/bin/bash
+        start_fractal() {
+          sleep 5
+          curl -X POST http://localhost:9092/start       
+         }
+         echo "This is task \${FLUX_TASK_RANK}"
+         if [[ "\${FLUX_TASK_RANK}" == "0" ]]; then
+           start_fractal &
+           fractal leader --host 0.0.0.0:50051 --force-exit
+         else
+           fractal worker --host flux-sample-0.flux-service.default.svc.cluster.local:50051
+         fi    
   resources:
     io:
       storage:

@@ -9,8 +9,9 @@ resources:
         with:
           - type: core
             count: 2
-tasks:
-- command:
+task:
+  slot: "default"
+  command:
   - ior
   count:
     per_slot: 1

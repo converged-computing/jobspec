@@ -64,13 +64,9 @@ func (js *Jobspec) GetJobName() string {
 	// If we have tasks, we can get from the command
 	// This entire set of checks is meant to be conservative
 	// and avoid any errors with nil / empty arrays, etc.
-	if js.Tasks != nil {
-		if len(js.Tasks) > 0 {
-			command := js.Tasks[0].Command
-			if len(command) > 0 {
-				name = command[0]
-			}
-		}
+	command := js.Task.Command
+	if len(command) > 0 {
+		name = command[0]
 	}
 	return name
 }

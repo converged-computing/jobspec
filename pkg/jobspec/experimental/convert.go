@@ -50,12 +50,11 @@ func NewSimpleJobspec(name, command string, nodes, tasks int32) (*Jobspec, error
 	// Tasks reference the slot and command
 	// Note: if we need better split can use "github.com/google/shlex"
 	cmd := strings.Split(command, " ")
-	taskResource := []Tasks{
-		{
-			Command: cmd,
-			Slot:    name,
-			Count:   Count{PerSlot: int32(1)},
-		}}
+	taskResource := Task{
+		Command: cmd,
+		Slot:    name,
+		Count:   Count{PerSlot: int32(1)},
+	}
 
 	// Attributes are for the system, we aren't going to add them yet
 	// attributes:
@@ -68,6 +67,6 @@ func NewSimpleJobspec(name, command string, nodes, tasks int32) (*Jobspec, error
 	return &Jobspec{
 		Version:   jobspecVersion,
 		Resources: []Resource{nodeResource},
-		Tasks:     taskResource,
+		Task:      taskResource,
 	}, nil
 }

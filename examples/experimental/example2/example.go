@@ -12,7 +12,7 @@ func main() {
 	fmt.Println("This example reads, parses, and validates a Jobspec")
 
 	// Assumes running from the root
-	fileName := flag.String("json", "examples/v1/example2/jobspec.yaml", "yaml file")
+	fileName := flag.String("json", "examples/experimental/example2/jobspec.yaml", "yaml file")
 	flag.Parse()
 
 	yamlFile := *fileName
