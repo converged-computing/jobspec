@@ -27,7 +27,7 @@ type Script struct {
 
 type Count struct {
 	PerSlot int32 `json:"per_slot,omitempty" yaml:"per_slot,omitempty"`
-	Total   int32 `json:"total,omitempty" yaml:"total,omitemtpy"`
+	Total   int32 `json:"total,omitempty" yaml:"total,omitempty"`
 }
 
 type Resource struct {
