@@ -167,7 +167,7 @@
           "type": "object"
         }
       },
-      "additionalProperties": false,
+      "additionalProperties": false
     },
     "task": {
       "description": "task configuration",
