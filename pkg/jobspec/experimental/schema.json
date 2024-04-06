@@ -139,7 +139,7 @@
       }
     },
     "attributes": {
-      "description": "system and user attributes",
+      "description": "system, parameter and user attributes",
       "type": [
         "object",
         "null"
@@ -162,8 +162,12 @@
         },
         "user": {
           "type": "object"
+        },
+        "parameter": {
+          "type": "object"
         }
-      }
+      },
+      "additionalProperties": false
     },
     "task": {
       "description": "task configuration",
