@@ -48,5 +48,7 @@ type System struct {
 	Environment map[string]string `yaml:"environment,omitempty" json:"environment,omitempty"`
 }
 type Attributes struct {
-	System System `yaml:"system,omitempty" json:"system"`
+	System    System                 `yaml:"system,omitempty" json:"system"`
+	User      map[string]interface{} `yaml:"user,omitempty" json:"user,omitempty"`
+	Parameter map[string]interface{} `yaml:"parameter,omitempty" json:"parameter,omitempty"`
 }
