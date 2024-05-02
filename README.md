@@ -1,6 +1,13 @@
 # Flux Jobspec (Go)
 
-This is a simple library that provides go structures for the Flux Framework [Jobspec](https://flux-framework.readthedocs.io/projects/flux-rfc/en/latest/spec_25.html) for use in other projects. 
+This is a simple library that provides go structures for:
+
+ - the Flux Framework [Jobspec](https://flux-framework.readthedocs.io/projects/flux-rfc/en/latest/spec_25.html) (package [jobspec](pkg/jobspec))
+ - the [Next Generation Jobspec](https://compspec.github.io/jobspec) (package [nextgen](pkg/nextgen/))
+
+Note for nextgen, since Go is more strict with typing, we accept a parsed JobSpec, meaning that all resources have been defined in the top level named section,
+and are referenced by name in tasks. We will start assuming that a request for the resource groups should be satisfied within the same cluster, and each is a separate
+match request.
 
 ## Usage
 
