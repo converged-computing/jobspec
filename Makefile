@@ -10,6 +10,7 @@ build:
 	go mod tidy
 	mkdir -p ./examples/v1/bin
 	mkdir -p ./examples/experimental/bin
+	mkdir -p ./examples/nextgen/v1/bin
 
 # Build examples
 .PHONY: createnew
@@ -48,8 +49,13 @@ exp1: build
 exp2: build
 	$(COMMONENVVAR) $(BUILDENVVAR) go build -ldflags '-w' -o ./examples/experimental/bin/example2 examples/experimental/example2/example.go
 
+.PHONY: ng1
+ng1: build
+	$(COMMONENVVAR) $(BUILDENVVAR) go build -ldflags '-w' -o ./examples/nextgen/v1/bin/example1 examples/nextgen/v1/example1/example.go
+
+
 .PHONY: test
-test: all
+test: build all
 	./examples/v1/bin/example1
 	./examples/v1/bin/example2
 	./examples/v1/bin/example3
@@ -59,6 +65,7 @@ test: all
 	./examples/v1/bin/createnew
 	./examples/experimental/bin/example1
 	./examples/experimental/bin/example2
+	./examples/nextgen/v1/bin/example1
 
 .PHONY: clean
 clean:
