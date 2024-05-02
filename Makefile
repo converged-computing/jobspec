@@ -3,7 +3,7 @@ COMMONENVVAR=GOOS=$(shell uname -s | tr A-Z a-z)
 RELEASE_VERSION?=v$(shell date +%Y%m%d)-$(shell git describe --tags --match "v*")
 
 .PHONY: all
-all: example1 example2 example3 example4 example5 example6 createnew exp1 exp2
+all: example1 example2 example3 example4 example5 example6 createnew exp1 exp2 ng1
 
 .PHONY: build
 build: 
