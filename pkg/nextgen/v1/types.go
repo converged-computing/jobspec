@@ -41,6 +41,7 @@ type Resource struct {
 	With      []Resource `yaml:"with,omitempty" json:"with,omitempty"`
 	Label     string     `yaml:"label,omitempty" json:"label,omitempty"`
 	Exclusive bool       `yaml:"exclusive,omitempty" json:"exclusive,omitempty"`
+	Schedule  bool       `yaml:"schedule,omitempty" json:"schedule,omitempty"`
 }
 
 type Attributes struct {

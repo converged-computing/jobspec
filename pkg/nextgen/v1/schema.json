@@ -44,6 +44,8 @@
             "required": ["type", "count"],
             "properties": {
                 "type": {"type": "string"},
+                "schedule": {"type": "boolean"},
+                "exclusive": {"type": "boolean"},
                 "count": {"type": "integer", "minimum": 1},
                 "unit": {"type": "string"},
                 "with": {"$ref": "#/definitions/with"}
@@ -53,7 +55,7 @@
         "with": {
             "type": "array",
             "minItems": 1,
-            "items": {"$ref": "#/definitions/with"}
+            "items": {"$ref": "#/definitions/resources"}
         },
         "steps": {
             "type": "array",
@@ -110,25 +112,6 @@
                 "attributes": {"$ref": "#/definitions/attributes"},
                 "depends_on": {"type": "array", "items": {"type": "string"}},
                 "tasks": {"$ref": "#/definitions/tasks"}
-            },
-            "additionalProperties": false
-        },
-        "slot_vertex": {
-            "description": "special slot resource type - label assigns to task slot",
-            "type": "object",
-            "required": ["type", "count", "with", "label"],
-            "properties": {
-                "type": {"enum": ["slot"]},
-                "count": {"type": "integer", "minimum": 1},
-                "unit": {"type": "string"},
-                "label": {"type": "string"},
-                "exclusive": {"type": "boolean"},
-                "with": {
-                    "type": "array",
-                    "minItems": 1,
-                    "maxItems": 2,
-                    "items": {"oneOf": [{"$ref": "#/definitions/intranode_resource_vertex"}]}
-                }
             },
             "additionalProperties": false
         }
