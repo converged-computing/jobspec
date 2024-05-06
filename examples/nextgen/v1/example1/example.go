@@ -49,4 +49,17 @@ func main() {
 		os.Exit(1)
 	}
 	fmt.Println(string(out))
+
+	// Test getting slots
+	slots := js.GetSlots()
+	fmt.Printf("Found %d slots\n", len(slots))
+	for _, slot := range slots {
+		fmt.Println(slot)
+	}
+
+	slots = js.GetScheduledSlots()
+	fmt.Printf("Found %d scheduled slots\n", len(slots))
+	for _, slot := range slots {
+		fmt.Println(slot)
+	}
 }
