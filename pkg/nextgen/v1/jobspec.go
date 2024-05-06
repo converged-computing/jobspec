@@ -2,8 +2,8 @@ package v1
 
 import (
 	"encoding/json"
-	"fmt"
 	"os"
+	"reflect"
 
 	"sigs.k8s.io/yaml"
 
@@ -34,50 +34,89 @@ func (js *Jobspec) JobspecToYaml() (string, error) {
 	return string(out), nil
 }
 
-// GetResources to get resource groups across the jobspec
-// this is intended for graph scheduling
-func (js *Jobspec) GetResources(data []byte) ([]Resource, error) {
+// GetSlots returns all slots in resources
+func (js *Jobspec) GetSlots() []Resource {
 
-	// We assume every discovered resource is a unique satisfy
-	resources := []Resource{}
+	emptyResource := Resource{}
+	slots := []Resource{}
+	fauxSlots := []Resource{}
 
-	// Make sure all task and group resources are known
-	for _, task := range js.Tasks {
-		r, err := js.getResources(task)
-		if err != nil {
-			return resources, err
+	// We first look explicitly for slots
+	for name, resource := range js.Resources {
+
+		// A jobspec resource with no slot is assumed to have
+		// a slot at the top level. We wrap in a faux slot
+		fauxSlots = append(fauxSlots, generateFauxSlot(name, resource))
+
+		// Slot at the top level already!
+		if resource.Type == "slot" {
+			slots = append(slots, resource)
 		}
-		resources = append(resources, r)
-	}
-	for _, group := range js.Groups {
-		r, err := js.getResources(group)
-		if err != nil {
-			return resources, err
+		for _, with := range resource.With {
+			slot := getSlots(with)
+			if !reflect.DeepEqual(emptyResource, slot) {
+				slots = append(slots, slot)
+			}
 		}
-		resources = append(resources, r)
 	}
-	return resources, nil
+
+	// If we found no slots, assume all top level resources are slots
+	if len(slots) == 0 {
+		return fauxSlots
+	}
+	return slots
 }
 
-// getResources unwraps resources. If there is a named string, we assume
-// in reference to a named resource group. We will need a strategy to combine
-// these intelligently when we ask for a match - right now just assuming
-// separate groups
-func (js *Jobspec) getResources(resources interface{}) (Resource, error) {
-	resource := Resource{}
-	switch v := resources.(type) {
-	case string:
-		resourceKey := resources.(string)
-		spec, ok := js.Resources[resourceKey]
-		if !ok {
-			return resource, fmt.Errorf("task is missing resource")
+// GetScheduledSlots returns all slots marked for scheduling
+// If none are marked, we assume they all are
+func (js *Jobspec) GetScheduledSlots() []Resource {
+
+	slots := js.GetSlots()
+	scheduled := []Resource{}
+
+	allTrue := true
+	for _, slot := range slots {
+		if slot.Schedule {
+			allTrue = false
+			scheduled = append(scheduled, slot)
 		}
-		return spec, nil
-	case Resource:
-		return resources.(Resource), nil
-	default:
-		return resource, fmt.Errorf("type %s is unknown", v)
 	}
+	// If none marked for scheduling, they all should be
+	if allTrue {
+		return slots
+	}
+	return scheduled
+}
+
+// A fauxSlot will only be use if we don't have any actual slots
+func generateFauxSlot(name string, resource Resource) Resource {
+	return Resource{
+		Type:     "slot",
+		Label:    name,
+		Count:    1,
+		Schedule: resource.Schedule,
+		With:     []Resource{resource},
+	}
+}
+
+// getSlots is a recursive helper function that takes resources explicitly
+func getSlots(resource Resource) Resource {
+
+	emptyResource := Resource{}
+
+	// If we find a slot, stop here
+	if resource.Type == "slot" {
+		return resource
+	}
+	for _, with := range resource.With {
+		slot := getSlots(with)
+
+		// If we find a slot
+		if !reflect.DeepEqual(emptyResource, slot) {
+			return slot
+		}
+	}
+	return emptyResource
 }
 
 // JobspectoJson convets back to json string
