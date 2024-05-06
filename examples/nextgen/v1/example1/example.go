@@ -51,15 +51,33 @@ func main() {
 	fmt.Println(string(out))
 
 	// Test getting slots
-	slots := js.GetSlots()
+	slots, err := js.GetSlots()
+	if err != nil {
+		fmt.Printf("error getting slots:%s\n", err)
+		os.Exit(1)
+	}
 	fmt.Printf("Found %d slots\n", len(slots))
 	for _, slot := range slots {
 		fmt.Println(slot)
 	}
 
-	slots = js.GetScheduledSlots()
+	slots, err = js.GetScheduledSlots()
+	if err != nil {
+		fmt.Printf("error getting scheduled slots:%s\n", err)
+		os.Exit(1)
+	}
 	fmt.Printf("Found %d scheduled slots\n", len(slots))
 	for _, slot := range slots {
 		fmt.Println(slot)
+	}
+
+	named, err := js.GetScheduledNamedSlots()
+	if err != nil {
+		fmt.Printf("error getting scheduled named slots:%s\n", err)
+		os.Exit(1)
+	}
+	fmt.Printf("Found %d scheduled named slots\n", len(slots))
+	for name, _ := range named {
+		fmt.Println(name)
 	}
 }
