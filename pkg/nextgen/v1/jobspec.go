@@ -2,7 +2,6 @@ package v1
 
 import (
 	"encoding/json"
-	"fmt"
 	"os"
 	"reflect"
 
@@ -36,7 +35,7 @@ func (js *Jobspec) JobspecToYaml() (string, error) {
 }
 
 // GetSlots returns all slots in resources
-func (js *Jobspec) GetSlots() ([]Resource, error) {
+func (js *Jobspec) GetSlots() []Resource {
 
 	emptyResource := Resource{}
 	slots := []Resource{}
@@ -51,18 +50,10 @@ func (js *Jobspec) GetSlots() ([]Resource, error) {
 
 		// Slot at the top level already!
 		if resource.Type == "slot" {
-
-			// If the slot doesn't have a label, no go
-			if resource.Label == "" {
-				return slots, fmt.Errorf("slots are required to have a label")
-			}
 			slots = append(slots, resource)
 		}
 		for _, with := range resource.With {
-			slot, err := getSlots(with)
-			if err != nil {
-				return slots, err
-			}
+			slot := getSlots(with)
 			if !reflect.DeepEqual(emptyResource, slot) {
 				slots = append(slots, slot)
 			}
@@ -71,19 +62,16 @@ func (js *Jobspec) GetSlots() ([]Resource, error) {
 
 	// If we found no slots, assume all top level resources are slots
 	if len(slots) == 0 {
-		return fauxSlots, nil
+		return fauxSlots
 	}
-	return slots, nil
+	return slots
 }
 
 // GetScheduledSlots returns all slots marked for scheduling
 // If none are marked, we assume they all are
-func (js *Jobspec) GetScheduledSlots() ([]Resource, error) {
+func (js *Jobspec) GetScheduledSlots() []Resource {
 
-	slots, err := js.GetSlots()
-	if err != nil {
-		return slots, err
-	}
+	slots := js.GetSlots()
 	scheduled := []Resource{}
 
 	allTrue := true
@@ -95,24 +83,20 @@ func (js *Jobspec) GetScheduledSlots() ([]Resource, error) {
 	}
 	// If none marked for scheduling, they all should be
 	if allTrue {
-		return slots, nil
+		return slots
 	}
-	return scheduled, nil
+	return scheduled
 }
 
 // GetScheduledNamedSlots returns slots as a lookup by name
-func (js *Jobspec) GetScheduledNamedSlots() (map[string]Resource, error) {
+func (js *Jobspec) GetScheduledNamedSlots() map[string]Resource {
 
-	slots, err := js.GetScheduledSlots()
+	slots := js.GetScheduledSlots()
 	named := map[string]Resource{}
-	if err != nil {
-		return named, err
-	}
-
 	for _, slot := range slots {
 		named[slot.Label] = slot
 	}
-	return named, nil
+	return named
 }
 
 // A fauxSlot will only be use if we don't have any actual slots
@@ -127,29 +111,23 @@ func generateFauxSlot(name string, resource Resource) Resource {
 }
 
 // getSlots is a recursive helper function that takes resources explicitly
-func getSlots(resource Resource) (Resource, error) {
+func getSlots(resource Resource) Resource {
 
 	emptyResource := Resource{}
 
 	// If we find a slot, stop here
 	if resource.Type == "slot" {
-		if resource.Label == "" {
-			return resource, fmt.Errorf("slots are required to have a label")
-		}
-		return resource, nil
+		return resource
 	}
 	for _, with := range resource.With {
-		slot, err := getSlots(with)
-		if err != nil {
-			return slot, err
-		}
+		slot := getSlots(with)
 
 		// If we find a slot
 		if !reflect.DeepEqual(emptyResource, slot) {
-			return slot, nil
+			return slot
 		}
 	}
-	return emptyResource, nil
+	return emptyResource
 }
 
 // JobspectoJson convets back to json string
