@@ -6,27 +6,27 @@ var (
 
 // The JobSpec is what the user writes to describe their work
 type Jobspec struct {
-	Version   int                 `json:"version" yaml:"version"`
-	Name      string              `json:"name,omitempty" yaml:"name,omitempty"`
-	Resources Resources           `json:"resources,omitempty" yaml:"resources,omitempty"`
-	Tasks     Tasks               `json:"tasks,omitempty" yaml:"tasks,omitempty"`
-	Groups    Groups              `json:"groups,omitempty" yaml:"groups,omitempty"`
-	Requires  map[string]Requires `json:"requires,omitempty" yaml:"requires,omitempty"`
+	Version   int        `json:"version" yaml:"version"`
+	Name      string     `json:"name,omitempty" yaml:"name,omitempty"`
+	Resources Resources  `json:"resources,omitempty" yaml:"resources,omitempty"`
+	Tasks     Tasks      `json:"tasks,omitempty" yaml:"tasks,omitempty"`
+	Groups    Groups     `json:"groups,omitempty" yaml:"groups,omitempty"`
+	Requires  []Requires `json:"requires,omitempty" yaml:"requires,omitempty"`
 }
 
 type Environment map[string]string
 type Resources map[string]Resource
-type Requires map[string]map[string]string
+type Requires map[string]string
 type Tasks []Task
 type Groups []Group
 
 type Task struct {
-	Group     string              `json:"group,omitempty" yaml:"group,omitempty"`
-	Name      string              `json:"name,omitempty" yaml:"name,omitempty"`
-	Replicas  int                 `json:"replicas,omitempty" yaml:"replicas,omitempty"`
-	Resources string              `json:"resources,omitempty" yaml:"resources,omitempty"`
-	Command   []string            `json:"command,omitempty" yaml:"command,omitempty"`
-	Requires  map[string]Requires `json:"requires,omitempty" yaml:"requires,omitempty"`
+	Group     string     `json:"group,omitempty" yaml:"group,omitempty"`
+	Name      string     `json:"name,omitempty" yaml:"name,omitempty"`
+	Replicas  int        `json:"replicas,omitempty" yaml:"replicas,omitempty"`
+	Resources string     `json:"resources,omitempty" yaml:"resources,omitempty"`
+	Command   []string   `json:"command,omitempty" yaml:"command,omitempty"`
+	Requires  []Requires `json:"requires,omitempty" yaml:"requires,omitempty"`
 }
 
 type Group struct {
