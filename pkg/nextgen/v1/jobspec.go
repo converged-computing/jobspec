@@ -48,8 +48,8 @@ func (js *Jobspec) GetSlots() []Resource {
 		// a slot at the top level. We wrap in a faux slot
 		fauxSlots = append(fauxSlots, generateFauxSlot(name, resource))
 
-		// Slot at the top level already!
-		if resource.Type == "slot" {
+		// If replicas > 0, we have a slot at the level already
+		if resource.Replicas > 0 {
 			slots = append(slots, resource)
 		}
 		for _, with := range resource.With {
@@ -101,13 +101,11 @@ func (js *Jobspec) GetScheduledNamedSlots() map[string]Resource {
 
 // A fauxSlot will only be use if we don't have any actual slots
 func generateFauxSlot(name string, resource Resource) Resource {
-	return Resource{
-		Type:     "slot",
-		Label:    name,
-		Count:    1,
-		Schedule: resource.Schedule,
-		With:     []Resource{resource},
+	resource.Replicas = 1
+	if resource.Label == "" {
+		resource.Label = name
 	}
+	return resource
 }
 
 // getSlots is a recursive helper function that takes resources explicitly

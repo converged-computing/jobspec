@@ -64,7 +64,7 @@ func main() {
 	}
 
 	named := js.GetScheduledNamedSlots()
-	fmt.Printf("Found %d scheduled named slots\n", len(slots))
+	fmt.Printf("Found %d scheduled named slots\n", len(named))
 	for name := range named {
 		fmt.Println(name)
 	}

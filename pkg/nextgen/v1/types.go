@@ -37,15 +37,16 @@ type Group struct {
 }
 
 type Resource struct {
-	Type       string              `yaml:"type,omitempty" json:"type,omitempty"`
-	Unit       string              `yaml:"unit,omitempty" json:"unit,omitempty"`
-	Count      int32               `yaml:"count,omitempty" json:"count,omitempty"`
-	With       []Resource          `yaml:"with,omitempty" json:"with,omitempty"`
-	Label      string              `yaml:"label,omitempty" json:"label,omitempty"`
-	Exclusive  bool                `yaml:"exclusive,omitempty" json:"exclusive,omitempty"`
+	Type       string     `yaml:"type,omitempty" json:"type,omitempty"`
+	Unit       string     `yaml:"unit,omitempty" json:"unit,omitempty"`
+	Replicas   int32      `yaml:"replicas,omitempty" json:"replicas,omitempty"`
+	Count      int32      `yaml:"count,omitempty" json:"count,omitempty"`
+	With       []Resource `yaml:"with,omitempty" json:"with,omitempty"`
+	Label      string     `yaml:"label,omitempty" json:"label,omitempty"`
+	Exclusive  bool       `yaml:"exclusive,omitempty" json:"exclusive,omitempty"`
 	Requires   []Requires `json:"requires,omitempty" yaml:"requires,omitempty"`
-	Attributes Attributes          `json:"attributes,omitempty" yaml:"attributes,omitempty"`
-	Schedule   bool                `yaml:"schedule,omitempty" json:"schedule,omitempty"`
+	Attributes Attributes `json:"attributes,omitempty" yaml:"attributes,omitempty"`
+	Schedule   bool       `yaml:"schedule,omitempty" json:"schedule,omitempty"`
 }
 
 type Attributes struct {
