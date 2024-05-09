@@ -23,8 +23,13 @@ func NewSimpleJobspec(name, command string, nodes, tasks int32) (*Jobspec, error
 
 	// The node resource is what we are asking for
 	nodeResource := Resource{
-		Type:     "node",
-		Count:    nodes,
+		Type:  "node",
+		Count: nodes,
+	}
+
+	// But we put it under the slot of a rack
+	rackResource := Resource{
+		Type:     "rack",
 		Replicas: 1,
 		Label:    name,
 	}
@@ -40,6 +45,7 @@ func NewSimpleJobspec(name, command string, nodes, tasks int32) (*Jobspec, error
 	}
 
 	// Resource name matches resources to named set
+	rackResource.With = []Resource{nodeResource}
 	resourceName := "task-resources"
 
 	// Tasks reference the slot and command
@@ -55,6 +61,6 @@ func NewSimpleJobspec(name, command string, nodes, tasks int32) (*Jobspec, error
 	return &Jobspec{
 		Version:   jobspecVersion,
 		Tasks:     tasklist,
-		Resources: Resources{resourceName: nodeResource},
+		Resources: Resources{resourceName: rackResource},
 	}, nil
 }
