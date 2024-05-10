@@ -15,7 +15,7 @@ type Jobspec struct {
 	Attributes Attributes `json:"attributes,omitempty" yaml:"attributes,omitempty"`
 }
 
-type Attributes map[string]string
+type Attributes map[string]interface{}
 type Environment map[string]string
 type Resources map[string]Resource
 type Requires map[string]string
