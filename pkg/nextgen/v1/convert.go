@@ -27,11 +27,11 @@ func NewSimpleJobspec(name, command string, nodes, tasks int32) (*Jobspec, error
 		Count: nodes,
 	}
 
-	// The slot is where we are doing an assessment for scheduling
-	slot := Resource{
-		Type:  "slot",
-		Count: int32(1),
-		Label: name,
+	// But we put it under the slot of a rack
+	rackResource := Resource{
+		Type:     "rack",
+		Replicas: 1,
+		Label:    name,
 	}
 
 	// If tasks are defined, this is total tasks across the nodes
@@ -41,13 +41,11 @@ func NewSimpleJobspec(name, command string, nodes, tasks int32) (*Jobspec, error
 			Type:  "core",
 			Count: tasks,
 		}
-		slot.With = []Resource{taskResource}
+		nodeResource.With = []Resource{taskResource}
 	}
 
-	// And then the entire resource spec is added to the top level node resource
-	nodeResource.With = []Resource{slot}
-
 	// Resource name matches resources to named set
+	rackResource.With = []Resource{nodeResource}
 	resourceName := "task-resources"
 
 	// Tasks reference the slot and command
@@ -63,6 +61,6 @@ func NewSimpleJobspec(name, command string, nodes, tasks int32) (*Jobspec, error
 	return &Jobspec{
 		Version:   jobspecVersion,
 		Tasks:     tasklist,
-		Resources: Resources{resourceName: nodeResource},
+		Resources: Resources{resourceName: rackResource},
 	}, nil
 }

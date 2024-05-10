@@ -12,16 +12,15 @@
             "type": "integer",
             "enum": [1]
         },
-        "requires": {"$ref": "#/definitions/requires"},
         "resources": {
             "type": "object",
             "patternProperties": {
                 "^([a-z]|[|]|&|[0-9]+)+$": {"$ref": "#/definitions/resources"}
             }
         },
-        "attributes": {"$ref": "#/definitions/attributes"},
         "groups": {"type": "array", "items": {"$ref": "#/definitions/group"}},
         "tasks": {"$ref": "#/definitions/tasks"},
+        "attributes": {"$ref": "#/definitions/attributes"},
         "additionalProperties": false
     },
     "definitions": {
@@ -34,31 +33,28 @@
                 "environment": {"type": "object"}
             }
         },
-        "requires": {
-            "description": "compatibility requirements",
-            "type": "object"
-        },
         "resources": {
             "description": "requested resources",
             "type": "object",
-            "required": ["type", "count"],
+            "required": ["type"],
             "properties": {
                 "type": {"type": "string"},
-                "schedule": {"type": "boolean"},
-                "exclusive": {"type": "boolean"},
                 "count": {"type": "integer", "minimum": 1},
-                "unit": {"type": "string"},
-                "with": {"$ref": "#/definitions/with"}
-            },
-            "additionalProperties": false
-        },
-        "with": {
-            "type": "array",
-            "minItems": 1,
-            "items": {"$ref": "#/definitions/resources"}
+                "requires": {
+                    "type": "array",
+                    "items": {"type": "object"}
+                },
+                "attributes": {"$ref": "#/definitions/attributes"},
+                "schedule": {"type": "boolean"},
+                "with": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {"$ref": "#/definitions/resources"}
+                }
+            }
         },
         "steps": {
-            "type": "array",
+            "type": ["array"],
             "items": {
                 "type": "object",
                 "properties": {
@@ -76,15 +72,9 @@
             "items": {
                 "type": "object",
                 "properties": {
-                    "requires": {"$ref": "#/definitions/requires"},
-                    "resources": {
-                        "oneOf": [
-                            {"$ref": "#/definitions/resources"},
-                            {"type": "string"}
-                        ]
-                    },
-                    "attributes": {"$ref": "#/definitions/attributes"},
+                    "resources": {"type": "string"},
                     "group": {"type": "string"},
+                    "local": {"type": "boolean"},
                     "name": {"type": "string"},
                     "depends_on": {"type": "array", "items": {"type": "string"}},
                     "replicas": {"type": "number", "minimum": 1, "default": 1},
@@ -102,18 +92,11 @@
             "type": "object",
             "properties": {
                 "name": {"type": "string"},
-                "requires": {"$ref": "#/definitions/requires"},
-                "resources": {
-                    "oneOf": [
-                        {"$ref": "#/definitions/resources"},
-                        {"type": "string"}
-                    ]
-                },
-                "attributes": {"$ref": "#/definitions/attributes"},
+                "resources": {"type": "string"},
                 "depends_on": {"type": "array", "items": {"type": "string"}},
-                "tasks": {"$ref": "#/definitions/tasks"}
+                "tasks": {"$ref": "#/definitions/tasks"},
+                "groups": {"type": "array", "items": {"$ref": "#/definitions/group"}}
             },
-            "additionalProperties": false
-        }
+            "additionalProperties": false        }
     }
 }
