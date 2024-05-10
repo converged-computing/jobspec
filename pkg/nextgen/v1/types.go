@@ -15,6 +15,7 @@ type Jobspec struct {
 	Attributes Attributes `json:"attributes,omitempty" yaml:"attributes,omitempty"`
 }
 
+type Attributes map[string]string
 type Environment map[string]string
 type Resources map[string]Resource
 type Requires map[string]string
@@ -48,10 +49,4 @@ type Resource struct {
 	Requires   []Requires `json:"requires,omitempty" yaml:"requires,omitempty"`
 	Attributes Attributes `json:"attributes,omitempty" yaml:"attributes,omitempty"`
 	Schedule   bool       `yaml:"schedule,omitempty" json:"schedule,omitempty"`
-}
-
-type Attributes struct {
-	Duration    string      `yaml:"duration,omitempty" json:"duration,omitempty"`
-	Cwd         string      `yaml:"cwd,omitempty" json:"cwd,omitempty"`
-	Environment Environment `yaml:"environment,omitempty" json:"environment,omitempty"`
 }
