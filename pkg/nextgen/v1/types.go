@@ -6,12 +6,13 @@ var (
 
 // The JobSpec is what the user writes to describe their work
 type Jobspec struct {
-	Version   int        `json:"version" yaml:"version"`
-	Name      string     `json:"name,omitempty" yaml:"name,omitempty"`
-	Resources Resources  `json:"resources,omitempty" yaml:"resources,omitempty"`
-	Tasks     Tasks      `json:"tasks,omitempty" yaml:"tasks,omitempty"`
-	Groups    Groups     `json:"groups,omitempty" yaml:"groups,omitempty"`
-	Requires  []Requires `json:"requires,omitempty" yaml:"requires,omitempty"`
+	Version    int        `json:"version" yaml:"version"`
+	Name       string     `json:"name,omitempty" yaml:"name,omitempty"`
+	Resources  Resources  `json:"resources,omitempty" yaml:"resources,omitempty"`
+	Tasks      Tasks      `json:"tasks,omitempty" yaml:"tasks,omitempty"`
+	Groups     Groups     `json:"groups,omitempty" yaml:"groups,omitempty"`
+	Requires   []Requires `json:"requires,omitempty" yaml:"requires,omitempty"`
+	Attributes Attributes `json:"attributes,omitempty" yaml:"attributes,omitempty"`
 }
 
 type Environment map[string]string

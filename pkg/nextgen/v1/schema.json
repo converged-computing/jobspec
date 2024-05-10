@@ -20,6 +20,7 @@
         },
         "groups": {"type": "array", "items": {"$ref": "#/definitions/group"}},
         "tasks": {"$ref": "#/definitions/tasks"},
+        "attributes": {"$ref": "#/definitions/attributes"},
         "additionalProperties": false
     },
     "definitions": {
