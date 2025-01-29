@@ -8,7 +8,11 @@ type Jobspec struct {
 	Version    int        `json:"version" yaml:"version"`
 	Resources  []Resource `json:"resources,omitempty" yaml:"resources,omitempty"`
 	Tasks      []Tasks    `json:"tasks,omitempty" yaml:"tasks,omitempty"`
-	Attributes Attributes `json:"attributes,omitempty" yaml:"attributes,omitempty"`
+	Attributes Attributes `json:"attributes" yaml:"attributes"`
+}
+
+type Constraints struct {
+	Hostlist []string `json:"hostlist,omitempty" yaml:"hostlist,omitempty"`
 }
 
 type Tasks struct {
@@ -31,14 +35,13 @@ type Resource struct {
 	Exclusive bool       `yaml:"exclusive,omitempty" json:"exclusive,omitempty"`
 }
 
-type Environment struct {
-	Home string `json:"HOME"`
-}
 type System struct {
 	Duration    int               `yaml:"duration,omitempty" json:"duration,omitempty"`
 	Cwd         string            `yaml:"cwd,omitempty" json:"cwd,omitempty"`
 	Environment map[string]string `yaml:"environment,omitempty" json:"environment,omitempty"`
+	Constraints Constraints       `yaml:"constraints,omitempty" json:"constraints,omitempty"`
 }
+
 type Attributes struct {
-	System System `yaml:"system,omitempty" json:"system"`
+	System System `yaml:"system,omitempty" json:"system,omitempty"`
 }
